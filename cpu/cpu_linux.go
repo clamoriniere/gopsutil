@@ -271,11 +271,13 @@ func InfoWithContext(ctx context.Context) ([]InfoStat, error) {
 				val = strings.Split(value, ".")[0]
 			}
 
-			t, err := strconv.ParseInt(val, 10, 64)
-			if err != nil {
-				return ret, err
-			}
-			c.Stepping = int32(t)
+			if value != "unknown" {
+				t, err := strconv.ParseInt(val, 10, 64)
+				if err != nil {
+					return ret, err
+				}
+				c.Stepping = int32(t)
+			}			
 		case "cpu MHz", "clock", "cpu MHz dynamic":
 			// treat this as the fallback value, thus we ignore error
 			if t, err := strconv.ParseFloat(strings.Replace(value, "MHz", "", 1), 64); err == nil {
